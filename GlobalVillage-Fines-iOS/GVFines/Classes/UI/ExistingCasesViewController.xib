@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExistingCasesViewController">
+            <connections>
+                <outlet property="businessCategoryButton" destination="xdb-Jr-bya" id="abX-KG-daM"/>
+                <outlet property="caseNumberTextField" destination="gim-JS-l9e" id="4X3-tc-net"/>
+                <outlet property="filterView" destination="g5N-MA-60a" id="2Sq-7l-hl5"/>
+                <outlet property="finesTableView" destination="vFa-ny-PiF" id="g2G-Vp-Po8"/>
+                <outlet property="infringementsView" destination="0kk-Hc-QuS" id="YUz-OJ-3yF"/>
+                <outlet property="loadingView" destination="dI1-0O-Nxm" id="BwY-dB-lKQ"/>
+                <outlet property="showCriteriaButton" destination="Hl0-Vf-R3V" id="L0M-Av-EGB"/>
+                <outlet property="subCategoryButton" destination="jQ7-Cd-LGF" id="1wm-MB-M3B"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="936"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="0kk-Hc-QuS">
+                    <rect key="frame" x="44" y="325" width="680" height="571"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="INFRINGEMENTS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDL-Tc-GyY">
+                            <rect key="frame" x="228" y="8" width="224" height="44"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                            <color key="textColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hqo-ZH-8ht">
+                            <rect key="frame" x="0.0" y="60" width="680" height="2"/>
+                            <animations/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="89" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="vFa-ny-PiF">
+                            <rect key="frame" x="0.0" y="65" width="680" height="503"/>
+                            <animations/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="yPr-lx-Zjc"/>
+                                <outlet property="delegate" destination="-1" id="Dpk-2s-kYL"/>
+                            </connections>
+                        </tableView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gxs-NW-v1E">
+                            <rect key="frame" x="549" y="8" width="123" height="44"/>
+                            <animations/>
+                            <state key="normal" title="Sort By" backgroundImage="DropdownButtonTransparentBackground">
+                                <color key="titleColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="sortByButtonClicked:" destination="-1" eventType="touchUpInside" id="GrC-Gx-Op2"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hl0-Vf-R3V">
+                            <rect key="frame" x="8" y="8" width="118" height="44"/>
+                            <animations/>
+                            <state key="normal" title="Show Open" backgroundImage="DropdownButtonTransparentBackground">
+                                <color key="titleColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="showCriteriaButtonClicked:" destination="-1" eventType="touchUpInside" id="dO6-y9-eMt"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="g5N-MA-60a">
+                    <rect key="frame" x="44" y="40" width="680" height="269"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CASE STATUS" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="psa-FU-cOQ" userLabel="CASE STATUS">
+                            <rect key="frame" x="8" y="8" width="664" height="44"/>
+                            <animations/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                            <color key="textColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aas-qX-31q">
+                            <rect key="frame" x="0.0" y="60" width="680" height="2"/>
+                            <animations/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xdb-Jr-bya">
+                            <rect key="frame" x="8" y="70" width="328" height="54"/>
+                            <animations/>
+                            <state key="normal" title="Business Category" backgroundImage="DropdownButtonBackground">
+                                <color key="titleColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="businessCategoryButtonClicked:" destination="-1" eventType="touchUpInside" id="w6z-lM-HlM"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jQ7-Cd-LGF">
+                            <rect key="frame" x="344" y="70" width="328" height="54"/>
+                            <animations/>
+                            <state key="normal" title="Sub Category" backgroundImage="DropdownButtonBackground">
+                                <color key="titleColor" red="0.15686274509803921" green="0.5607843137254902" blue="0.80784313725490198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="subCategoryButtonClicked:" destination="-1" eventType="touchUpInside" id="nrZ-s8-urT"/>
+                            </connections>
+                        </button>
+                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Case Number" textAlignment="center" minimumFontSize="17" background="ButtonBackground" translatesAutoresizingMaskIntoConstraints="NO" id="gim-JS-l9e">
+                            <rect key="frame" x="8" y="132" width="664" height="54"/>
+                            <animations/>
+                            <color key="textColor" red="0.15686274509803921" green="0.5607843137254902" blue="0.80784313725490198" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8O1-92-Tl3">
+                            <rect key="frame" x="0.0" y="194" width="340" height="75"/>
+                            <animations/>
+                            <state key="normal" title="RESET" backgroundImage="ActionButtonLeftBackground">
+                                <color key="titleColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="resetButtonClicked:" destination="-1" eventType="touchUpInside" id="EzZ-tJ-gwg"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vfp-aO-bfd">
+                            <rect key="frame" x="339" y="194" width="341" height="75"/>
+                            <animations/>
+                            <state key="normal" title="FILTER" backgroundImage="ActionButtonRightBackground">
+                                <color key="titleColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="filterButtonClicked:" destination="-1" eventType="touchUpInside" id="EQX-j5-PrH"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dI1-0O-Nxm">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="936"/>
+                    <subviews>
+                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="EyP-cB-jir">
+                            <rect key="frame" x="374" y="458" width="37" height="37"/>
+                            <animations/>
+                            <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <animations/>
+                    <color key="backgroundColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+            </subviews>
+            <animations/>
+            <color key="backgroundColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ActionButtonLeftBackground" width="114" height="72"/>
+        <image name="ActionButtonRightBackground" width="114" height="72"/>
+        <image name="ButtonBackground" width="9" height="10"/>
+        <image name="DropdownButtonBackground" width="66" height="47"/>
+        <image name="DropdownButtonTransparentBackground" width="65" height="46"/>
+    </resources>
+</document>

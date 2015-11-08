@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
+            <connections>
+                <outlet property="casesOldButton" destination="07k-qA-fAF" id="KSO-e7-zaW"/>
+                <outlet property="containerView" destination="Azc-Ws-Q7h" id="66Z-KF-77O"/>
+                <outlet property="finesNewButton" destination="Lot-wS-9IV" id="xxu-Gh-Rdn"/>
+                <outlet property="finesOldButton" destination="3Wr-yB-tBe" id="NfH-vS-mzY"/>
+                <outlet property="logoutButton" destination="xF3-JJ-aZj" id="KYi-Hy-X96"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="b7b-OA-dyU">
+                    <rect key="frame" x="0.0" y="0.0" width="768" height="88"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xF3-JJ-aZj">
+                            <rect key="frame" x="637" y="23" width="131" height="57"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="LOGOUT" image="LogoutIcon" backgroundImage="NavButtonBackground">
+                                <color key="titleColor" red="0.52941176469999995" green="0.52941176469999995" blue="0.52941176469999995" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" title="LOGOUT" image="LogoutIconSelected" backgroundImage="SelectedNavButtonBackground">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" image="LogoutIconSelected" backgroundImage="SelectedNavButtonBackground">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="LogoutButtonClicked:" destination="-1" eventType="touchUpInside" id="Mxy-qB-EZN"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Wr-yB-tBe">
+                            <rect key="frame" x="342" y="23" width="153" height="57"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="EXISTING FINES" image="OldFineIcon" backgroundImage="NavButtonBackground">
+                                <color key="titleColor" red="0.52941176470588236" green="0.52941176470588236" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" image="OldFineIconSelected" backgroundImage="SelectedNavButtonBackground">
+                                <color key="titleColor" cocoaTouchSystemColor="tableCellGroupedBackgroundColor"/>
+                            </state>
+                            <state key="highlighted" image="OldFineIconSelected" backgroundImage="SelectedNavButtonBackground">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="OldFinesButtonClicked:" destination="-1" eventType="touchUpInside" id="QfN-Z9-hyL"/>
+                            </connections>
+                        </button>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="GV Logo" translatesAutoresizingMaskIntoConstraints="NO" id="XWh-7C-rLf">
+                            <rect key="frame" x="3" y="23" width="190" height="57"/>
+                        </imageView>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lot-wS-9IV">
+                            <rect key="frame" x="186" y="23" width="148" height="57"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="NEW FINES" image="NewFineIcon" backgroundImage="NavButtonBackground">
+                                <color key="titleColor" red="0.52941176470588236" green="0.52941176470588236" blue="0.52941176470588236" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="selected" title="NEW FINES" image="NewFineIconSelected" backgroundImage="SelectedNavButtonBackground">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="highlighted" image="NewFineIconSelected" backgroundImage="SelectedNavButtonBackground">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="NewFineButtonClicked:" destination="-1" eventType="touchUpInside" id="SAY-PK-BYr"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="07k-qA-fAF">
+                            <rect key="frame" x="493" y="23" width="145" height="57"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="EXISTING CASES" image="OldCaseIcon" backgroundImage="NavButtonBackground">
+                                <color key="titleColor" red="0.52941176470588236" green="0.52941176470588236" blue="0.52941176470588236" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <state key="selected" title="EXISTING CASES" image="OldCaseIcon" backgroundImage="SelectedNavButtonBackground">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="OldCasesButtonClicked:" destination="-1" eventType="touchUpInside" id="xsq-Qs-7VF"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </view>
+                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Azc-Ws-Q7h">
+                    <rect key="frame" x="0.0" y="88" width="768" height="936"/>
+                    <color key="backgroundColor" red="0.15686274510000001" green="0.56078431370000004" blue="0.80784313730000001" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="GV Logo" width="190" height="62"/>
+        <image name="LogoutIcon" width="23" height="26"/>
+        <image name="LogoutIconSelected" width="23" height="26"/>
+        <image name="NavButtonBackground" width="64" height="5"/>
+        <image name="NewFineIcon" width="20" height="24"/>
+        <image name="NewFineIconSelected" width="20" height="24"/>
+        <image name="OldCaseIcon" width="32" height="36"/>
+        <image name="OldFineIcon" width="26" height="23"/>
+        <image name="OldFineIconSelected" width="26" height="23"/>
+        <image name="SelectedNavButtonBackground" width="39" height="57"/>
+    </resources>
+</document>

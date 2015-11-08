@@ -1,0 +1,50 @@
+{
+  "images" : [
+    {
+      "resizing" : {
+        "mode" : "9-part",
+        "center" : {
+          "mode" : "fill",
+          "width" : 1,
+          "height" : 1
+        },
+        "capInsets" : {
+          "bottom" : 49,
+          "top" : 7,
+          "right" : 19,
+          "left" : 19
+        }
+      },
+      "idiom" : "universal",
+      "filename" : "SelectedNavButtonBackground.png",
+      "scale" : "1x"
+    },
+    {
+      "resizing" : {
+        "mode" : "9-part",
+        "center" : {
+          "mode" : "fill",
+          "width" : 1,
+          "height" : 1
+        },
+        "capInsets" : {
+          "bottom" : 103,
+          "top" : 9,
+          "right" : 35,
+          "left" : 36
+        }
+      },
+      "idiom" : "universal",
+      "filename" : "SelectedNavButtonBackground@2x.png",
+      "scale" : "2x"
+    },
+    {
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "version" : 1,
+    "author" : "xcode"
+  }
+}
