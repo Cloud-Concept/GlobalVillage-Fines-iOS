@@ -97,8 +97,8 @@
         NSString *dateInString = [SFDateUtil toSOQLDateTimeString:[NSDate date] isDateTime:true];
         //selectedPavilionFineObject.Id, @"Pavilion_Fine_Type__c",
     //SELECT Id, CaseNumber, Account.Name, Shop__r.Name,issued__c, Violation_Clause__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c,Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c FROM Case WHERE RecordType.DeveloperName = 'Re_Issue_Fine' AND Issued__c != true
-    //012g00000000l68
-    //
+    //012g00000000l68 Sand
+    //01220000000Mbt7 Production
         NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
                                 self.fine.Id,@"Parent_Fine__c",
                                 ownerId, @"OwnerId",

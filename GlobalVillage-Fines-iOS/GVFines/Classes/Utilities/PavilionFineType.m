@@ -29,4 +29,11 @@
     return self;
 }
 
+-(id)initPavilionFineTypeWithId:(NSString*)fineId Name:(NSString*)fineName FineAmount:(NSNumber*)fineAmount Department:(NSString*)fineDepartment ViolationClause:(NSString*)fineViolationClause Description:(NSString*)fineDescription ShortDescription:(NSString*)fineShortDescription WarningIncluded:(BOOL)warning{
+    
+    self = [self initPavilionFineTypeWithId:fineId Name:fineName FineAmount:fineAmount Department:fineDepartment ViolationClause:fineViolationClause Description:fineDescription ShortDescription:fineShortDescription];
+    self.WarningIncluded = warning;
+    return self;
+}
+
 @end

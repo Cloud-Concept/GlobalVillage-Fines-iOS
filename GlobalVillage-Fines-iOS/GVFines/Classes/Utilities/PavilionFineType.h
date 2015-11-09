@@ -17,7 +17,9 @@
 @property (strong, nonatomic) NSString *ViolationClause;
 @property (strong, nonatomic) NSString *Description;
 @property (strong, nonatomic) NSString *ShortDescription;
+@property (nonatomic) BOOL WarningIncluded;
 
+-(id)initPavilionFineTypeWithId:(NSString*)fineId Name:(NSString*)fineName FineAmount:(NSNumber*)fineAmount Department:(NSString*)fineDepartment ViolationClause:(NSString*)fineViolationClause Description:(NSString*)fineDescription ShortDescription:(NSString*)fineShortDescription WarningIncluded:(BOOL)warning;
 -(id)initPavilionFineTypeWithId:(NSString*)fineId Name:(NSString*)fineName FineAmount:(NSNumber*)fineAmount Department:(NSString*)fineDepartment ViolationClause:(NSString*)fineViolationClause Description:(NSString*)fineDescription ShortDescription:(NSString*)fineShortDescription;
 
 @end

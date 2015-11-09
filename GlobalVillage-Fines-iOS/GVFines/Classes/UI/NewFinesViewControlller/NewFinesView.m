@@ -326,7 +326,7 @@
     selectedPavilionFineObject = nil;
     selectedPavilionFineDepartmentIndex = -1;
     
-    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Id, Name, X1st_Fine_Amount__c, Department__c, Violation_Clause__c, Fine_Description__c, Violation_Short_Description__c FROM Pavilion_Fine_Type__c"];
+    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Id, Name, X1st_Fine_Amount__c, Department__c, Violation_Clause__c, Fine_Description__c, Violation_Short_Description__c,Warning_Included__c FROM Pavilion_Fine_Type__c"];
     [[SFRestAPI sharedInstance] send:request delegate:self];
 }
 
@@ -383,10 +383,10 @@
                                               CreatedBy:[[obj objectForKey:@"CreatedBy"] objectForKey:@"Name"]
                                             CreatedDate:[obj objectForKey:@"CreatedDate"]
                                FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"]
-                                 Issued:[obj objectForKey:@"issued__c"]
-                            shopId:[obj objectForKey:@"Shop__r.Name"]
+                                                 Issued:[obj objectForKey:@"issued__c"]
+                                                 shopId:[obj objectForKey:@"Shop__r.Name"]
                                        PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
-                            Stage:[obj objectForKey:@"Fine_Stage__c"]];
+                                                  Stage:[obj objectForKey:@"Fine_Stage__c"]];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -426,13 +426,20 @@
     
     NSString *dateInString = [SFDateUtil toSOQLDateTimeString:[NSDate date] isDateTime:true];
     SFUserAccountManager *accountManager = [SFUserAccountManager sharedInstance];
-    
+    NSString * fineStatus;
+    if (selectedPavilionFineObject.WarningIncluded) {
+        fineStatus = @"Warning";
+    }
+    else{
+        fineStatus = @"1st Fine Printed";
+    }
     NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
                             selectedPavilionFineObject.Id, @"Pavilion_Fine_Type__c",
                             fineQueueId, @"OwnerId",
                             accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
                             pavilionFineRecordTypeId, @"RecordTypeId",
                             selectedBusinessCategoryId, @"AccountId",
+                            fineStatus,@"Status",
                             selectedSubCategoryId, @"Shop__c",
                             self.commentsTextView.text, @"Comments__c",
                             dateInString, @"Fine_Last_Status_Update_Date__c",
@@ -474,9 +481,10 @@
         NSString *string = [imageData base64EncodedStringWithOptions:0];
         
         NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"Image", @"Name",
+                                @"Image.png", @"Name",
                                 @"image", @"ContentType",
                                 caseId, @"ParentId",
+                                @"image/png",@"ContentType",
                                 string, @"Body",
                                 nil];
         
@@ -825,7 +833,7 @@
                                                 CreatedBy:[[obj objectForKey:@"CreatedBy"] objectForKey:@"Name"]
                                               CreatedDate:[obj objectForKey:@"CreatedDate"]
                                  FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"] Issued:[[obj objectForKey:@"issued__c"] boolValue]
-                                shopId:[obj objectForKey:@"shopId"]
+                                                   shopId:[obj objectForKey:@"shopId"]
                                          PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
                                                     Stage:[obj objectForKey:@"Fine_Stage__c"]];
         }
@@ -849,7 +857,7 @@
                                                    Department:[obj objectForKey:@"Department__c"]
                                                    ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
                                                    Description:[obj objectForKey:@"Fine_Description__c"]
-                                                   ShortDescription:[obj objectForKey:@"Violation_Short_Description__c"]]];
+                                                   ShortDescription:[obj objectForKey:@"Violation_Short_Description__c"] WarningIncluded:[[obj objectForKey:@"Warning_Included__c"] boolValue]]];
         }
         NSLog(@"request:didLoadResponse:  Object: Pavilion_Fine_Type__c, #records: %lu", (unsigned long)self.pavilionFineTypeArray.count);
     }
@@ -902,7 +910,10 @@
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self stopActivityIndicatorSpinner];
+        //if (selectedPavilionFineObject.WarningIncluded) {
         [HelperClass messageBox:@"An error occured while contacting the server." withTitle:@"Error"];
+        //}
+        
     });
 }
 
