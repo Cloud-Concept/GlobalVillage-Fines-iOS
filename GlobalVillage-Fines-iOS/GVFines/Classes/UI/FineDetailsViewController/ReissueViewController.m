@@ -119,11 +119,11 @@
     self.fine.X2ndFineAmount,@"X2nd_Fine_Amount__c",*/
         //[[SFRestAPI sharedInstance] send:request1 delegate:self];
     [[SFRestAPI sharedInstance] sendRESTRequest:issuedRequest failBlock:^(NSError *e) {
-        
+        [[[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:@"Please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
     } completeBlock:^(NSDictionary *dic){
-        
+        [[SFRestAPI sharedInstance] send:createFineRequest delegate:self];
     }];
-    [[SFRestAPI sharedInstance] send:createFineRequest delegate:self];
+    
 }
 
 - (IBAction)cameraButtonClicked:(id)sender {
