@@ -66,7 +66,7 @@
         //        [self presentViewController:addImages animated:YES completion:nil];
         //        });
         //UITextField *alertTextField = [alertView textFieldAtIndex:0];
-        NSString *commetns = self.commentsView.text;
+        NSString *comments = self.commentsView.text;
         NSLog(@"%@",self.fine.Status);
         if ([self.fine.Status isEqualToString:@"1st Fine Approved"]) {
             newStatus = @"2nd Fine Printed";
@@ -106,18 +106,12 @@
                                 self.fine.shopId,@"Shop__c",
                                 accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
                                 @"012g00000000l68", @"RecordTypeId",
-                                self.category.Id, @"AccountId",
-                                self.fine.Comments, @"Comments__c",
+                                self.fine.BusinessCategoryId, @"AccountId",
+                                comments, @"Comments__c",
                                 newStatus,@"Status",
                                 dateInString, @"Fine_Last_Status_Update_Date__c",
                                 nil];
-        SFRestRequest *createFineRequest = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
-    /*self.fine.ViolationClause,@"Violation_Clause__c"
-    ,self.fine.ViolationDescription,@"Violation_Description__c",
-    self.fine.ViolationShortDescription,@"Violation_Short_Description__c",
-    self.fine.X1stFineAmount,@"Fine_Amount__c",
-    self.fine.X2ndFineAmount,@"X2nd_Fine_Amount__c",*/
-        //[[SFRestAPI sharedInstance] send:request1 delegate:self];
+    SFRestRequest *createFineRequest = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
     [[SFRestAPI sharedInstance] sendRESTRequest:issuedRequest failBlock:^(NSError *e) {
         [[[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:@"Please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
     } completeBlock:^(NSDictionary *dic){
@@ -239,9 +233,16 @@
             NSString *shopName = @"";
             if(![[obj objectForKey:@"Shop__r"] isKindOfClass:[NSNull class]])
                 shopName = [[obj objectForKey:@"Shop__r"] objectForKey:@"Name"];
+            NSString *businessCategoryName =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryName = [[obj objectForKey:@"Account"] objectForKey:@"Name"];
+            NSString *businessCategoryId =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryId = [[obj objectForKey:@"Account"] objectForKey:@"Id"];
+
             self.reissuedFine = [[Fine alloc] initFineWithId:[obj objectForKey:@"Id"]
                                                   CaseNumber:[obj objectForKey:@"CaseNumber"]
-                                            BusinessCategory:[[obj objectForKey:@"Account"] objectForKey:@"Name"]
+                                            BusinessCategory:businessCategoryName
                                                  SubCategory:shopName
                                              ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
                                         ViolationDescription:[obj objectForKey:@"Violation_Description__c"]
@@ -257,7 +258,8 @@
                                                       Issued:[obj objectForKey:@"issued__c"]
                                                       shopId:shopId
                                             PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
-                                 Stage:[obj objectForKey:@"Fine_Stage__c"]];
+                                 Stage:[obj objectForKey:@"Fine_Stage__c"]
+                                 BusinessCategoryId:businessCategoryId];
             //[HelperClass printReceiptForFine:self.reissuedFine];
             [self.delegate didFinishUpdatingFine:self.reissuedFine ImagesArray:[self.imagesArray mutableCopy]];
             //[HelperClass printReceiptForFine:self.reissuedFine];
@@ -281,6 +283,7 @@
 - (void)request:(SFRestRequest *)request didFailLoadWithError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
         //[self stopActivityIndicatorSpinner];
+         NSLog(@"%@",error);
         [HelperClass messageBox:@"An error occured while updating the fine." withTitle:@"Error"];
         [SVProgressHUD dismiss];
     });

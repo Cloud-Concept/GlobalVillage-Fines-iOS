@@ -345,7 +345,7 @@
     
     isCheckingFineExists = YES;
     
-    NSString *selectQuery = [NSString stringWithFormat:@"SELECT Id, CaseNumber, Account.Name,issued__c, Shop__r.Name,Shop__r.Id, Violation_Clause__c,Fine_Stage__c,Pavilion_Fine_Type__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name FROM Case WHERE RecordType.DeveloperName = 'Pavilion_Fine' AND AccountId = '%@' AND Shop__c = '%@' AND Pavilion_Fine_Type__c = '%@' AND Status NOT IN ('Rectified', 'Fine Rejected') AND Season__r.Name='2015-16'", selectedBusinessCategoryId, selectedSubCategoryId, selectedPavilionFineObject.Id];
+    NSString *selectQuery = [NSString stringWithFormat:@"SELECT Id, CaseNumber,Fine_Amount__c, Account.Name,Account.Id,issued__c, Shop__r.Name,Shop__r.Id, Violation_Clause__c,Fine_Stage__c,Pavilion_Fine_Type__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name FROM Case WHERE RecordType.DeveloperName = 'Pavilion_Fine' AND AccountId = '%@' AND Shop__c = '%@' AND Pavilion_Fine_Type__c = '%@' AND Status NOT IN ('Rectified', 'Fine Rejected') AND Season__r.Name='2015-16'", selectedBusinessCategoryId, selectedSubCategoryId, selectedPavilionFineObject.Id];
     
     void (^errorBlock) (NSError*) = ^(NSError *e) {
         isCheckingFineExists = NO;
@@ -362,31 +362,37 @@
         Fine *existingFine = nil;
         
         for (NSDictionary *obj in [dict objectForKey:@"records"]) {
-            
+            NSString *shopId = @"";
+            if(![[obj objectForKey:@"Shop__r"] isKindOfClass:[NSNull class]])
+                shopId = [[obj objectForKey:@"Shop__r"] objectForKey:@"Id"];
             NSString *shopName = @"";
             if(![[obj objectForKey:@"Shop__r"] isKindOfClass:[NSNull class]])
                 shopName = [[obj objectForKey:@"Shop__r"] objectForKey:@"Name"];
-            
+            NSString *businessCategoryName = @"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryName = [[obj objectForKey:@"Account"] objectForKey:@"Name"];
+            NSString *businessCategoryId =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryId = [[obj objectForKey:@"Account"] objectForKey:@"Id"];
             
             existingFine = [[Fine alloc] initFineWithId:[obj objectForKey:@"Id"]
-                                             CaseNumber:[obj objectForKey:@"CaseNumber"]
-                                       BusinessCategory:[[obj objectForKey:@"Account"] objectForKey:@"Name"]
-                                            SubCategory:shopName
-                                        ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
-                                   ViolationDescription:[obj objectForKey:@"Violation_Description__c"]
-                              ViolationShortDescription:[obj objectForKey:@"Violation_Short_Description__c"]
-                                         FineDepartment:[obj objectForKey:@"Fine_Department__c"]
-                                         X1stFineAmount:(NSNumber*)[obj objectForKey:@"X1st_Fine_Amount__c"]
-                                         X2ndFineAmount:(NSNumber*)[obj objectForKey:@"X2nd_Fine_Amount__c"]
-                                               Comments:[obj objectForKey:@"Comments__c"]
-                                                 Status:[obj objectForKey:@"Status"]
-                                              CreatedBy:[[obj objectForKey:@"CreatedBy"] objectForKey:@"Name"]
-                                            CreatedDate:[obj objectForKey:@"CreatedDate"]
-                               FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"]
-                                                 Issued:[obj objectForKey:@"issued__c"]
-                                                 shopId:[obj objectForKey:@"Shop__r.Name"]
-                                       PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
-                                                  Stage:[obj objectForKey:@"Fine_Stage__c"]];
+                                                         CaseNumber:[obj objectForKey:@"CaseNumber"]
+                                                   BusinessCategory:businessCategoryName
+                                                        SubCategory:shopName
+                                                    ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
+                                               ViolationDescription:[obj objectForKey:@"Violation_Description__c"]
+                                          ViolationShortDescription:[obj objectForKey:@"Violation_Short_Description__c"]
+                                                     FineDepartment:[obj objectForKey:@"Fine_Department__c"]
+                                                     X1stFineAmount:(NSNumber*)[obj objectForKey:@"Fine_Amount__c"]
+                                                     X2ndFineAmount:(NSNumber*)[obj objectForKey:@"Fine_Amount__c"]
+                                                           Comments:[obj objectForKey:@"Comments__c"]
+                                                             Status:[obj objectForKey:@"Status"]
+                                                          CreatedBy:[[obj objectForKey:@"CreatedBy"] objectForKey:@"Name"]
+                                                        CreatedDate:[obj objectForKey:@"CreatedDate"]
+                                           FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"]
+                                                             Issued:[obj objectForKey:@"issued__c"]
+                                                             shopId:shopId
+                                                   PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"] Stage:[obj objectForKey:@"Fine_Stage__c"] BusinessCategoryId:businessCategoryId];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -815,11 +821,16 @@
             NSString *shopName = @"";
             if(![[obj objectForKey:@"Shop__r"] isKindOfClass:[NSNull class]])
                 shopName = [[obj objectForKey:@"Shop__r"] objectForKey:@"Name"];
-            
+            NSString *businessCategoryName =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryName = [[obj objectForKey:@"Account"] objectForKey:@"Name"];
+            NSString *businessCategoryId =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryName = [[obj objectForKey:@"Account"] objectForKey:@"Id"];
             
             newFinesObject = [[Fine alloc] initFineWithId:[obj objectForKey:@"Id"]
                                                CaseNumber:[obj objectForKey:@"CaseNumber"]
-                                         BusinessCategory:[[obj objectForKey:@"Account"] objectForKey:@"Name"]
+                                         BusinessCategory:businessCategoryName
                                               SubCategory:shopName
                                           ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
                                      ViolationDescription:[obj objectForKey:@"Violation_Description__c"]
@@ -834,7 +845,7 @@
                                  FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"] Issued:[[obj objectForKey:@"issued__c"] boolValue]
                                                    shopId:[obj objectForKey:@"shopId"]
                                          PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
-                                                    Stage:[obj objectForKey:@"Fine_Stage__c"]];
+                                                    Stage:[obj objectForKey:@"Fine_Stage__c"] BusinessCategoryId: businessCategoryId];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{

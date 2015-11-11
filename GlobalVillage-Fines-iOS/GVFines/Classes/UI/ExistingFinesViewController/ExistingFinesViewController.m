@@ -473,10 +473,13 @@
             NSString *businessCategoryName = @"";
             if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
                 businessCategoryName = [[obj objectForKey:@"Account"] objectForKey:@"Name"];
+            NSString *businessCategoryId =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryId = [[obj objectForKey:@"Account"] objectForKey:@"Id"];
             
             [self.finesArray addObject:[[Fine alloc] initFineWithId:[obj objectForKey:@"Id"]
                                                          CaseNumber:[obj objectForKey:@"CaseNumber"]
-                                                   BusinessCategory:[[obj objectForKey:@"Account"] objectForKey:@"Name"]
+                                                   BusinessCategory:businessCategoryName
                                                         SubCategory:shopName
                                                     ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
                                                ViolationDescription:[obj objectForKey:@"Violation_Description__c"]
@@ -491,7 +494,9 @@
                                            FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"]
                                                              Issued:[obj objectForKey:@"issued__c"]
                                                              shopId:shopId
-                                                   PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"] Stage:[obj objectForKey:@"Fine_Stage__c"]]];
+                                                   PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
+                                                   Stage:[obj objectForKey:@"Fine_Stage__c"]
+                                                 BusinessCategoryId:businessCategoryId]];
             NSLog(@"Id: %@ --- shope:%@ ---- pavilion:%@ ---- status:%@",[obj objectForKey:@"Id"],shopName,[obj objectForKey:@"Pavilion_Fine_Type__c"],[obj objectForKey:@"Status"]);
         }
         

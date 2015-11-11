@@ -336,6 +336,7 @@
 
 - (void)setButtons {
     if ([currentFine.Status isEqualToString:@"Rectified"] ||
+        [currentFine.Status isEqualToString:@"Warning"] ||
         [currentFine.Status isEqualToString:@"Fine Rejected"] ||
         [currentFine.Status isEqualToString:@"1st Fine Printed"] ||
         [currentFine.Status isEqualToString:@"2nd Fine Printed"] ||
@@ -470,7 +471,7 @@
 //        [self presentViewController:addImages animated:YES completion:nil];
 //        });
         UITextField *alertTextField = [alertView textFieldAtIndex:0];
-        NSString *commetns = alertTextField.text;
+        NSString *Comments = alertTextField.text;
         NSLog(@"%@",currentFine.Status);
         if ([currentFine.Status isEqualToString:@"1st Fine Approved"]) {
             newStatus = @"2nd Fine Printed";
@@ -509,7 +510,7 @@
                                 @"012g00000000l68", @"RecordTypeId",
                                 currentCategory.Id, @"AccountId",
                                 currentSubCategory.Id, @"Shop__c",
-                                currentFine.Comments, @"Comments__c",
+                                Comments, @"Comments__c",
                                 newStatus,@"Status",
                                 dateInString, @"Fine_Last_Status_Update_Date__c",
                                 nil];
