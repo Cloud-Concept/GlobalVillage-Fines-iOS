@@ -482,7 +482,6 @@
         
         NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
                                 @"Image.png", @"Name",
-                                @"image", @"ContentType",
                                 caseId, @"ParentId",
                                 @"image/png",@"ContentType",
                                 string, @"Body",
