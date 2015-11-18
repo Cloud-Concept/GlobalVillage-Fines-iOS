@@ -345,7 +345,7 @@
     
     isCheckingFineExists = YES;
     
-    NSString *selectQuery = [NSString stringWithFormat:@"SELECT Id, CaseNumber,Fine_Amount__c, Account.Name,Account.Id,issued__c, Shop__r.Name,Shop__r.Id, Violation_Clause__c,Fine_Stage__c,Pavilion_Fine_Type__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name FROM Case WHERE RecordType.DeveloperName = 'Pavilion_Fine' AND AccountId = '%@' AND Shop__c = '%@' AND Pavilion_Fine_Type__c = '%@' AND Status NOT IN ('Rectified', 'Fine Rejected') AND Season__r.Name='2015-16'", selectedBusinessCategoryId, selectedSubCategoryId, selectedPavilionFineObject.Id];
+    NSString *selectQuery = [NSString stringWithFormat:@"SELECT Id, CaseNumber,Fine_Amount__c, Account.Name,Account.Id,issued__c, Shop__r.Name,Shop__r.Id, Violation_Clause__c,Fine_Stage__c,Pavilion_Fine_Type__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name FROM Case WHERE (RecordType.DeveloperName = 'Pavilion_Fine' OR RecordType.DeveloperName = 'Re_Issue_Fine') AND AccountId = '%@' AND Shop__c = '%@' AND Pavilion_Fine_Type__c = '%@' AND Status NOT IN ('Rectified', 'Fine Rejected') AND Season__r.Name='2015-16' AND issued__C != True", selectedBusinessCategoryId, selectedSubCategoryId, selectedPavilionFineObject.Id];
     
     void (^errorBlock) (NSError*) = ^(NSError *e) {
         isCheckingFineExists = NO;

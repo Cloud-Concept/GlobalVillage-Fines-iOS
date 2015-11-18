@@ -103,13 +103,13 @@
                                 self.fine.Id,@"Parent_Fine__c",
                                 ownerId, @"OwnerId",
                                 self.fine.pavilionFineType,@"Pavilion_Fine_Type__c",
-                                self.fine.shopId,@"Shop__c",
                                 accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
-                                @"012g00000000l68", @"RecordTypeId",
+                                @"01220000000Mbt7", @"RecordTypeId",
                                 self.fine.BusinessCategoryId, @"AccountId",
                                 comments, @"Comments__c",
                                 newStatus,@"Status",
                                 dateInString, @"Fine_Last_Status_Update_Date__c",
+                                self.fine.shopId,@"Shop__c",
                                 nil];
     SFRestRequest *createFineRequest = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
     [[SFRestAPI sharedInstance] sendRESTRequest:issuedRequest failBlock:^(NSError *e) {

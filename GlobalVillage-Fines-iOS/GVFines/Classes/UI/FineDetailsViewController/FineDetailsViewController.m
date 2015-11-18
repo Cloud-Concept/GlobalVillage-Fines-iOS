@@ -507,7 +507,7 @@
                                 currentFine.Id,@"Parent_Fine__c",
                                 ownerId, @"OwnerId",
                                 accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
-                                @"012g00000000l68", @"RecordTypeId",
+                                @"01220000000Mbt7", @"RecordTypeId",
                                 currentCategory.Id, @"AccountId",
                                 currentSubCategory.Id, @"Shop__c",
                                 Comments, @"Comments__c",
