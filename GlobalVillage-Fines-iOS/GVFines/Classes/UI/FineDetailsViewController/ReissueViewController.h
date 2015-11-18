@@ -20,12 +20,19 @@
 
 @protocol ReissueViewDelegate <NSObject>
 @required
-- (void)didFinishUpdatingFine:(Fine *)fine;
+- (void)didFinishUpdatingFine:(Fine *)fine ImagesArray:(NSMutableArray *)imagesArray;
 - (void)closeFineDetailsPopup;
 @end
 
 
-@interface ReissueViewController : UIViewController<CaptureImagesViewControllerDelegate,SFRestDelegate,UIPopoverControllerDelegate,UITextViewDelegate>
+@interface ReissueViewController : UIViewController<CaptureImagesViewControllerDelegate,SFRestDelegate,UIPopoverControllerDelegate,UITextViewDelegate>{
+    NSInteger totalAttachmentsToUpload;
+    NSInteger attachmentsReturned;
+    BOOL isUploadingAttachments;
+    NSArray *imagesArray;
+    NSMutableArray *failedImagedArray;
+    NSString *attachmentParentId;
+}
 
 @property (weak,nonatomic) id<ReissueViewDelegate> delegate;
 @property (strong,nonatomic) Fine *fine;

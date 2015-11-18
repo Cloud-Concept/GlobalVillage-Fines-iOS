@@ -66,7 +66,7 @@
         //        [self presentViewController:addImages animated:YES completion:nil];
         //        });
         //UITextField *alertTextField = [alertView textFieldAtIndex:0];
-        NSString *commetns = self.commentsView.text;
+        NSString *comments = self.commentsView.text;
         NSLog(@"%@",self.fine.Status);
         if ([self.fine.Status isEqualToString:@"1st Fine Approved"]) {
             newStatus = @"2nd Fine Printed";
@@ -89,7 +89,7 @@
         
         SFUserAccountManager *accountManager = [SFUserAccountManager sharedInstance];
         //update issued checkbox
-         SFRestRequest *request1 = [[SFRestAPI sharedInstance] requestForUpdateWithObjectType:@"Case"
+         SFRestRequest *issuedRequest = [[SFRestAPI sharedInstance] requestForUpdateWithObjectType:@"Case"
          objectId:self.fine.Id
          fields:[NSDictionary dictionaryWithObjects:@[@YES, self.GR1QueueId, accountManager.currentUser.credentials.userId]
          forKeys:@[@"issued__c", @"OwnerId", @"Latest_Fine_Issuer__c"]]];
@@ -105,25 +105,19 @@
                                 self.fine.pavilionFineType,@"Pavilion_Fine_Type__c",
                                 self.fine.shopId,@"Shop__c",
                                 accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
-                                @"01220000000Mbt7", @"RecordTypeId",
-                                self.category.Id, @"AccountId",
-                                self.fine.Comments, @"Comments__c",
+                                @"012g00000000l68", @"RecordTypeId",
+                                self.fine.BusinessCategoryId, @"AccountId",
+                                comments, @"Comments__c",
                                 newStatus,@"Status",
                                 dateInString, @"Fine_Last_Status_Update_Date__c",
                                 nil];
-        SFRestRequest *request = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
-    /*self.fine.ViolationClause,@"Violation_Clause__c"
-    ,self.fine.ViolationDescription,@"Violation_Description__c",
-    self.fine.ViolationShortDescription,@"Violation_Short_Description__c",
-    self.fine.X1stFineAmount,@"Fine_Amount__c",
-    self.fine.X2ndFineAmount,@"X2nd_Fine_Amount__c",*/
-        //[[SFRestAPI sharedInstance] send:request1 delegate:self];
-    [[SFRestAPI sharedInstance] sendRESTRequest:request1 failBlock:^(NSError *e) {
-        
+    SFRestRequest *createFineRequest = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
+    [[SFRestAPI sharedInstance] sendRESTRequest:issuedRequest failBlock:^(NSError *e) {
+        [[[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:@"Please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
     } completeBlock:^(NSDictionary *dic){
-        
+        [[SFRestAPI sharedInstance] send:createFineRequest delegate:self];
     }];
-        [[SFRestAPI sharedInstance] send:request delegate:self];
+    
 }
 
 - (IBAction)cameraButtonClicked:(id)sender {
@@ -147,27 +141,27 @@
 }
 
 - (void)uploadAttachmentsWithCaseId:(NSString *)caseId{
-    //[self initializeAndStartActivityIndicatorSpinner];
-    
-//    int totalAttachmentsToUpload = self.imagesArray.count;
-//    attachmentsReturned = 0;
-//    failedImagedArray = [NSMutableArray new];
-//    attachmentParentId = caseId;
+    [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD showWithStatus:@"Uploading..."];
+
+    totalAttachmentsToUpload = self.imagesArray.count;
+    attachmentsReturned = 0;
+    failedImagedArray = [NSMutableArray new];
+    attachmentParentId = caseId;
     
     for (UIImage *image in self.imagesArray) {
         
         void (^errorBlock) (NSError*) = ^(NSError *e) {
-//            [failedImagedArray addObject:image];
-//            
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self uploadDidReturn];
-//            });
+            dispatch_async(dispatch_get_main_queue(), ^{
+            [failedImagedArray addObject:image];
+            [self uploadDidReturn];
+            });
         };
         
         void (^successBlock)(NSDictionary *dict) = ^(NSDictionary *dict) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                [self uploadDidReturn];
-//            });
+            dispatch_async(dispatch_get_main_queue(), ^{
+            [self uploadDidReturn];
+            });
         };
         
         UIImage *resizedImage = [HelperClass imageWithImage:image ScaledToSize:CGSizeMake(480, 640)];
@@ -177,17 +171,38 @@
         NSString *string = [imageData base64EncodedStringWithOptions:0];
         
         NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
-                                @"Image", @"Name",
-                                @"image", @"ContentType",
+                                @"Image.png", @"Name",
                                 caseId, @"ParentId",
+                                @"image/png",@"ContentType",
                                 string, @"Body",
                                 nil];
         
-        //isUploadingAttachments = YES;
+        isUploadingAttachments = YES;
         [[SFRestAPI sharedInstance] performCreateWithObjectType:@"Attachment"
                                                          fields:fields
                                                       failBlock:errorBlock
                                                   completeBlock:successBlock];
+    }
+
+}
+
+- (void)uploadDidReturn {
+    attachmentsReturned++;
+    
+    if (attachmentsReturned == totalAttachmentsToUpload) {
+        isUploadingAttachments = NO;
+        //[self stopActivityIndicatorSpinner];
+        
+            [SVProgressHUD dismiss];
+        
+        if (failedImagedArray.count > 0) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                             message:@"Uploading the images failed."
+                                                            delegate:self
+                                                   cancelButtonTitle:@"Cancel"
+                                                   otherButtonTitles:@"Retry", nil];
+            [alert show];
+        }
     }
 }
 
@@ -202,7 +217,8 @@
 //    NSString *selectQuery = [request.queryParams objectForKey:@"q"];
 //    if([selectQuery rangeOfString:@"FROM Case"].location != NSNotFound)
     self.fine.Status = [request.queryParams objectForKey:@"Status"];
-    [self uploadAttachmentsWithCaseId:jsonResponse];
+    
+    [self uploadAttachmentsWithCaseId:[jsonResponse objectForKey:@"id"]];
     NSString *requestString = [NSString stringWithFormat:@"SELECT Id, CaseNumber, Account.Name, Shop__r.Id,Shop__r.Name,Fine_Stage__c,issued__c, Violation_Clause__c,Pavilion_Fine_Type__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c,Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c FROM Case WHERE Id='%@' Limit 1",[jsonResponse objectForKey:@"id"]];
     SFRestRequest *requestForFine = [[SFRestAPI sharedInstance] requestForQuery:requestString];
     //[NSString stringWithFormat:@"",[jsonResponse objectForKey:@"Id"]];
@@ -217,9 +233,16 @@
             NSString *shopName = @"";
             if(![[obj objectForKey:@"Shop__r"] isKindOfClass:[NSNull class]])
                 shopName = [[obj objectForKey:@"Shop__r"] objectForKey:@"Name"];
+            NSString *businessCategoryName =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryName = [[obj objectForKey:@"Account"] objectForKey:@"Name"];
+            NSString *businessCategoryId =@"";
+            if(![[obj objectForKey:@"Account"] isKindOfClass:[NSNull class]])
+                businessCategoryId = [[obj objectForKey:@"Account"] objectForKey:@"Id"];
+
             self.reissuedFine = [[Fine alloc] initFineWithId:[obj objectForKey:@"Id"]
                                                   CaseNumber:[obj objectForKey:@"CaseNumber"]
-                                            BusinessCategory:[[obj objectForKey:@"Account"] objectForKey:@"Name"]
+                                            BusinessCategory:businessCategoryName
                                                  SubCategory:shopName
                                              ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
                                         ViolationDescription:[obj objectForKey:@"Violation_Description__c"]
@@ -235,9 +258,10 @@
                                                       Issued:[obj objectForKey:@"issued__c"]
                                                       shopId:shopId
                                             PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
-                                 Stage:[obj objectForKey:@"Fine_Stage__c"]];
+                                 Stage:[obj objectForKey:@"Fine_Stage__c"]
+                                 BusinessCategoryId:businessCategoryId];
             //[HelperClass printReceiptForFine:self.reissuedFine];
-            [self.delegate didFinishUpdatingFine:self.reissuedFine];
+            [self.delegate didFinishUpdatingFine:self.reissuedFine ImagesArray:[self.imagesArray mutableCopy]];
             //[HelperClass printReceiptForFine:self.reissuedFine];
             if (![self.fine.Status isEqualToString:@"Rectified"])
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -259,6 +283,7 @@
 - (void)request:(SFRestRequest *)request didFailLoadWithError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
         //[self stopActivityIndicatorSpinner];
+         NSLog(@"%@",error);
         [HelperClass messageBox:@"An error occured while updating the fine." withTitle:@"Error"];
         [SVProgressHUD dismiss];
     });
@@ -284,7 +309,16 @@
     [textView resignFirstResponder];
 }
 
-
+#pragma UIAlertViewDelegate
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0)
+        return;
+    
+    if (buttonIndex == 1) {
+        [self uploadAttachmentsWithCaseId:attachmentParentId];
+    }
+    
+}
 /*
 #pragma mark - Navigation
 

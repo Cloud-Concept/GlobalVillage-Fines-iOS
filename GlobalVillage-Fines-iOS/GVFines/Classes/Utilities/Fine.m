@@ -10,7 +10,7 @@
 
 @implementation Fine
 
-- (id)initFineWithId:(NSString*)fineId CaseNumber:(NSString*)fineCaseNumber BusinessCategory:(NSString*)fineBusinessCategory SubCategory:(NSString*)fineSubCategory ViolationClause:(NSString*)fineViolationClause ViolationDescription:(NSString*)fineViolationDescription ViolationShortDescription:(NSString*)fineViolationShortDescription FineDepartment:(NSString*)fineDepartment X1stFineAmount:(NSNumber*)fine1stAmount X2ndFineAmount:(NSNumber*)fine2ndAmount Comments:(NSString*)fineComments Status:(NSString*)fineStatus CreatedBy:(NSString*)fineCreatedBy CreatedDate:(NSString*)fineCreatedDate FineLastStatusUpdateDate:(NSString*)fineLastStatusUpdateDate Issued:(BOOL)issued shopId:(NSString *)shopId PavilionFineType:(NSString *)pavilionFineType Stage:(NSString *)fineStage {
+- (id)initFineWithId:(NSString*)fineId CaseNumber:(NSString*)fineCaseNumber BusinessCategory:(NSString*)fineBusinessCategory SubCategory:(NSString*)fineSubCategory ViolationClause:(NSString*)fineViolationClause ViolationDescription:(NSString*)fineViolationDescription ViolationShortDescription:(NSString*)fineViolationShortDescription FineDepartment:(NSString*)fineDepartment X1stFineAmount:(NSNumber*)fine1stAmount X2ndFineAmount:(NSNumber*)fine2ndAmount Comments:(NSString*)fineComments Status:(NSString*)fineStatus CreatedBy:(NSString*)fineCreatedBy CreatedDate:(NSString*)fineCreatedDate FineLastStatusUpdateDate:(NSString*)fineLastStatusUpdateDate Issued:(BOOL)issued shopId:(NSString *)shopId PavilionFineType:(NSString *)pavilionFineType Stage:(NSString *)fineStage BusinessCategoryId:(NSString *)businessCategoryId {
     
     if(!(self = [super init]))
         return nil;
@@ -29,6 +29,7 @@
     self.shopId = shopId;
     self.pavilionFineType = pavilionFineType;
     self.fineStage = fineStage;
+    self.BusinessCategoryId = businessCategoryId;
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];

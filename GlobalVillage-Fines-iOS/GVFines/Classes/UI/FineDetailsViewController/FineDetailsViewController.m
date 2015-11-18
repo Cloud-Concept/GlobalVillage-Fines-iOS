@@ -84,24 +84,24 @@
         
         self.imagesScrollView.delegate = self;
         
-        self.imageViews = [[NSMutableArray alloc] init];
-        for(UIView *imageView in self.imagesScrollView.subviews){
-            if ([imageView isKindOfClass:[UIImageView class]]) {
-                UIImageView *image = (UIImageView *) imageView;
-                if (image.tag == 3) {
-                    [self.imageViews addObject:image];
-                    /*
-                     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-                     [button addTarget:self
-                     action:@selector(imageTapped)
-                     forControlEvents:UIControlEventTouchUpInside];
-                     button.frame = image.frame;
-                     [self.imagesScrollView addSubview:button];
-                     */
-                }
-            }
-        }
-        
+//        self.imageViews = [[NSMutableArray alloc] init];
+//        for(UIView *imageView in self.imagesScrollView.subviews){
+//            if ([imageView isKindOfClass:[UIImageView class]]) {
+//                UIImageView *image = (UIImageView *) imageView;
+//                if (image.tag == 3) {
+//                    [self.imageViews addObject:image];
+//                    /*
+//                     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//                     [button addTarget:self
+//                     action:@selector(imageTapped)
+//                     forControlEvents:UIControlEventTouchUpInside];
+//                     button.frame = image.frame;
+//                     [self.imagesScrollView addSubview:button];
+//                     */
+//                }
+//            }
+//        }
+    
         //disable the reissue button
         if ([currentFine.Status isEqualToString:@"Warning Approved"]||
             [currentFine.Status isEqualToString:@"1st Fine Approved"]||
@@ -120,7 +120,39 @@
          [sview addGestureRecognizer:singleTap];
          [sview setUserInteractionEnabled:YES];
          }*/
+        
         SFRestRequest *requestForImages = [[SFRestAPI sharedInstance] requestForQuery:[NSString stringWithFormat:@"SELECT Id,Body,ParentId FROM Attachment WHERE ParentId='%@'",currentFine.Id]];
+    if (self.arrayOfImages) {
+        if (self.arrayOfImages.count>0) {
+            for(UIView *imageView in self.imagesScrollView.subviews){
+                if ([imageView isKindOfClass:[UIImageView class]]) {
+                    UIImageView *image = (UIImageView *) imageView;
+                    if (image.tag == 3) {
+                        [self.imageViews addObject:image];
+                    }
+                }
+            }
+            ///
+            self.noImageLabel.hidden = YES;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                int imageCounter = 0;
+                for (UIImage *singleImage in self.arrayOfImages) {
+                    UIImageView *image = [[self.imageViews objectAtIndex:imageCounter] initWithImage:singleImage];
+                    //[self.imageViews addObject:image];
+                    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+                    button.tag = imageCounter;
+                    [button addTarget:self
+                               action:@selector(imageTapped:)
+                     forControlEvents:UIControlEventTouchUpInside];
+                    button.frame = image.frame;
+                    [self.imagesScrollView addSubview:button];
+                }
+                [self.imageDownloadingIndicator stopAnimating];
+                self.imageDownloadingIndicator.hidden = YES;
+            });
+        }
+
+    } else {
         [[SFRestAPI sharedInstance] sendRESTRequest:requestForImages failBlock:^(NSError *e) {
             [[[UIAlertView alloc] initWithTitle:@"Sorry." message:@"Something went wrong" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
         } completeBlock:^(NSDictionary *dic){
@@ -130,7 +162,7 @@
              }*/
             
             NSArray *records = [dic objectForKey:@"records"];
-            self.arrayOfImages = [[NSMutableArray alloc] init];
+            
             self.imagesCount = [records count];
             if (self.imagesCount > 0) {
                 //self.imageDownloadingIndicator.hidden = NO;
@@ -144,6 +176,49 @@
                 
             }
             int counter = 0;
+            self.imageViews = [[NSMutableArray alloc] init];
+            self.arrayOfImages =[[NSMutableArray alloc] init];
+
+            for(UIView *imageView in self.imagesScrollView.subviews){
+                if ([imageView isKindOfClass:[UIImageView class]]) {
+                    UIImageView *image = (UIImageView *) imageView;
+                    if (image.tag == 3) {
+                        [self.imageViews addObject:image];
+                        /*
+                         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+                         [button addTarget:self
+                         action:@selector(imageTapped)
+                         forControlEvents:UIControlEventTouchUpInside];
+                         button.frame = image.frame;
+                         [self.imagesScrollView addSubview:button];
+                         */
+                    }
+                }
+            }
+            
+            //change this part
+//            if (self.arrayOfImages.count>0) {
+//                self.noImageLabel.hidden = YES;
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                int imageCounter = 0;
+//                for (UIImage *singleImage in self.arrayOfImages) {
+//                    UIImageView *image = [[self.imageViews objectAtIndex:imageCounter] initWithImage:singleImage];
+//                    //[self.imageViews addObject:image];
+//                    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//                    button.tag = imageCounter;
+//                    [button addTarget:self
+//                               action:@selector(imageTapped:)
+//                     forControlEvents:UIControlEventTouchUpInside];
+//                    button.frame = image.frame;
+//                    [self.imagesScrollView addSubview:button];
+//                }
+//                    [self.imageDownloadingIndicator stopAnimating];
+//                    self.imageDownloadingIndicator.hidden = YES;
+//                });
+//            }
+            
+            /////
+
             for (NSDictionary *record in records) {
                 ////
                 // How to get the correct host, since that is configured after the login.
@@ -184,7 +259,8 @@
                 counter++;
             }
         }];
-    
+    }
+
         
 }
 
@@ -260,6 +336,7 @@
 
 - (void)setButtons {
     if ([currentFine.Status isEqualToString:@"Rectified"] ||
+        [currentFine.Status isEqualToString:@"Warning"] ||
         [currentFine.Status isEqualToString:@"Fine Rejected"] ||
         [currentFine.Status isEqualToString:@"1st Fine Printed"] ||
         [currentFine.Status isEqualToString:@"2nd Fine Printed"] ||
@@ -332,6 +409,8 @@
 }
 
 -(void)resetImageViews {
+    self.noImageLabel.hidden = YES;
+    self.arrayOfImages = nil;
     for (UIImageView *imageView in self.imageViews) {
         imageView.image = nil;
     }
@@ -392,7 +471,7 @@
 //        [self presentViewController:addImages animated:YES completion:nil];
 //        });
         UITextField *alertTextField = [alertView textFieldAtIndex:0];
-        NSString *commetns = alertTextField.text;
+        NSString *Comments = alertTextField.text;
         NSLog(@"%@",currentFine.Status);
         if ([currentFine.Status isEqualToString:@"1st Fine Approved"]) {
             newStatus = @"2nd Fine Printed";
@@ -422,15 +501,16 @@
         */
         NSString *dateInString = [SFDateUtil toSOQLDateTimeString:[NSDate date] isDateTime:true];
         //selectedPavilionFineObject.Id, @"Pavilion_Fine_Type__c",
-        //012g00000000l68
+        //012g00000000l68 SandbBox
+        //01220000000Mbt7 Production
         NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
                                 currentFine.Id,@"Parent_Fine__c",
                                 ownerId, @"OwnerId",
                                 accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
-                                @"01220000000Mbt7", @"RecordTypeId",
+                                @"012g00000000l68", @"RecordTypeId",
                                 currentCategory.Id, @"AccountId",
                                 currentSubCategory.Id, @"Shop__c",
-                                currentFine.Comments, @"Comments__c",
+                                Comments, @"Comments__c",
                                 newStatus,@"Status",
                                 dateInString, @"Fine_Last_Status_Update_Date__c",
                                 nil];
@@ -461,17 +541,21 @@
 }
 
 #pragma FineDetailsViewDelegate
-- (void)didFinishUpdatingFine:(Fine *)reissuedFine {
+- (void)didFinishUpdatingFine:(Fine *)reissuedFine ImagesArray:(NSMutableArray *)imagesArray {
     if (reissuedFine) {
+        [self resetImageViews];
         currentFine = reissuedFine;
-    }
+        if (imagesArray) {
+            if (imagesArray.count>0) {
+                self.arrayOfImages = imagesArray;
+            }
+        }
     dispatch_async(dispatch_get_main_queue(), ^{
         [HelperClass printReceiptForFine:currentFine];
-        [self resetImageViews];
         [self reloadFineView];
         [self.reissueFinePopover dismissPopoverAnimated:YES];
     });
-    
+    }
     //[self loadFines];
 }
 

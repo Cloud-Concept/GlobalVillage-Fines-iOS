@@ -31,8 +31,9 @@
 @property (strong,nonatomic) NSString *shopId;
 @property (strong,nonatomic) NSString *pavilionFineType;
 @property (strong,nonatomic) NSString *fineStage;
+@property (strong,nonatomic) NSString *BusinessCategoryId;
 
-- (id)initFineWithId:(NSString*)fineId CaseNumber:(NSString*)fineCaseNumber BusinessCategory:(NSString*)fineBusinessCategory SubCategory:(NSString*)fineSubCategory ViolationClause:(NSString*)fineViolationClause ViolationDescription:(NSString*)fineViolationDescription ViolationShortDescription:(NSString*)fineViolationShortDescription FineDepartment:(NSString*)fineDepartment X1stFineAmount:(NSNumber*)fine1stAmount X2ndFineAmount:(NSNumber*)fine2ndAmount Comments:(NSString*)fineComments Status:(NSString*)fineStatus CreatedBy:(NSString*)fineCreatedBy CreatedDate:(NSString*)fineCreatedDate FineLastStatusUpdateDate:(NSString*)fineLastStatusUpdateDate Issued:(BOOL)issued shopId:(NSString *)shopId PavilionFineType:(NSString *)pavilionFineType Stage:(NSString *)fineStage;
+- (id)initFineWithId:(NSString*)fineId CaseNumber:(NSString*)fineCaseNumber BusinessCategory:(NSString*)fineBusinessCategory SubCategory:(NSString*)fineSubCategory ViolationClause:(NSString*)fineViolationClause ViolationDescription:(NSString*)fineViolationDescription ViolationShortDescription:(NSString*)fineViolationShortDescription FineDepartment:(NSString*)fineDepartment X1stFineAmount:(NSNumber*)fine1stAmount X2ndFineAmount:(NSNumber*)fine2ndAmount Comments:(NSString*)fineComments Status:(NSString*)fineStatus CreatedBy:(NSString*)fineCreatedBy CreatedDate:(NSString*)fineCreatedDate FineLastStatusUpdateDate:(NSString*)fineLastStatusUpdateDate Issued:(BOOL)issued shopId:(NSString *)shopId PavilionFineType:(NSString *)pavilionFineType Stage:(NSString *)fineStage BusinessCategoryId:(NSString *)businessCategoryId;
 
 - (BOOL)isUrgent;
 
