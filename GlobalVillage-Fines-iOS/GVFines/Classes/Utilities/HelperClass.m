@@ -32,7 +32,7 @@ static ESCPOSPrinter *escp;
     
     [escp printText:[NSString stringWithFormat:@"Date: %@ \r\r\r\r\r\n", [self formatDateToString:dateNow]] withAlignment:ALIGNMENT_RIGHT withOption:FNT_BOLD withSize:TXT_1WIDTH];
     
-    [escp printText:[NSString stringWithFormat:@"Time: %@\r\n\r\n", [self formatTimeToString:dateNow]] withAlignment:ALIGNMENT_RIGHT withOption:FNT_BOLD withSize:TXT_1WIDTH];
+    [escp printText:[NSString stringWithFormat:@"Time: %@\r\r\r\r\r\r\n\r\n", [self formatTimeToString:dateNow]] withAlignment:ALIGNMENT_RIGHT withOption:FNT_BOLD withSize:TXT_1WIDTH];
     
     [escp printText:[NSString stringWithFormat:@"Fine Reference No. %@\r\n\r\n", fine.CaseNumber] withAlignment:ALIGNMENT_LEFT withOption:FNT_UNDERLINE|FNT_BOLD withSize:TXT_1WIDTH];
     
