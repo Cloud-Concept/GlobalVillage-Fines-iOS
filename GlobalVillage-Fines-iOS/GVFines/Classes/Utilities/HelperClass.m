@@ -24,15 +24,14 @@ static ESCPOSPrinter *escp;
     }
     
     NSDate* dateNow = [NSDate date];
-    
     NSString * imgfile1 = [[NSBundle mainBundle] pathForResource:@"GV Logo.png" ofType:nil];
     [escp printBitmap:imgfile1 withAlignment:ALIGNMENT_LEFT withSize:BITMAP_NORMAL withBrightness:5];
     
     [escp lineFeed:4];
     
-    [escp printText:[NSString stringWithFormat:@"Date: %@ \r\r\r\r\r\n", [self formatDateToString:dateNow]] withAlignment:ALIGNMENT_RIGHT withOption:FNT_BOLD withSize:TXT_1WIDTH];
+    [escp printText:[NSString stringWithFormat:@"Date: %@ \r\r\r\r\r\n", [self formatDateToString:dateNow]] withAlignment:ALIGNMENT_LEFT withOption:FNT_BOLD withSize:TXT_1WIDTH];
     
-    [escp printText:[NSString stringWithFormat:@"Time: %@\r\r\r\r\r\r\n\r\n", [self formatTimeToString:dateNow]] withAlignment:ALIGNMENT_RIGHT withOption:FNT_BOLD withSize:TXT_1WIDTH];
+    [escp printText:[NSString stringWithFormat:@"Time: %@\r\r\r\r\r\r\n\r\n", [self formatTimeToString:dateNow]] withAlignment:ALIGNMENT_LEFT withOption:FNT_BOLD withSize:TXT_1WIDTH];
     
     [escp printText:[NSString stringWithFormat:@"Fine Reference No. %@\r\n\r\n", fine.CaseNumber] withAlignment:ALIGNMENT_LEFT withOption:FNT_UNDERLINE|FNT_BOLD withSize:TXT_1WIDTH];
     
@@ -55,14 +54,17 @@ static ESCPOSPrinter *escp;
     [escp printString:[NSString stringWithFormat:@"%@\r\n\r\n", fine.CreatedBy]];
     
     [escp printText:@"Issuer:\r\n" withAlignment:ALIGNMENT_LEFT withOption:FNT_BOLD|FNT_UNDERLINE withSize:TXT_1WIDTH];
-    [escp printString:@"Please note that warnings should be rectified within 48 hours, \r\n except for HSE warnings, which have to be rectified immediately, \r\n  or else Global Village has the right to issue a fine.\r\n"];
+    [escp printString:@"Please note that warnings should be rectified within 48 hours,\r\n"];
+    [escp printString:@"except for HSE warnings, which have to be rectified immediately,\r\n"];
+    [escp printString:@"or else Global Village has the right to issue a fine.\r\n"];
     [escp printString:@"All fines should be rectified within 3 days off issuing date.\r\n"];
-    [escp printString:@"Not rectifying the violation within the allocated period,\r\n  will result in another penalty.\r\n"];
-    [escp printString:@"For any inquiries, kindly approach Government Relations & \r\n Administration offices.\r\n"];
+    [escp printString:@"Not rectifying the violation within the allocated period,\r\n"];
+    [escp printString:@"will result in another penalty.\r\n"];
+    [escp printString:@"For any inquiries, kindly approach Government Relations & \r\n"];
+    [escp printString:@"Administration offices.\r\n"];
     [escp printString:@"Please visit the GR office within 2 days of issue of this fine.\r\n"];
     [escp printText:@"Thank you. \r\r\r" withAlignment:ALIGNMENT_CENTER withOption:0 withSize:TXT_1WIDTH];
     [escp lineFeed:4];
-    
     [NSTimer scheduledTimerWithTimeInterval:3.0 target:self selector:@selector(disconnectCommand) userInfo:nil repeats:NO];
     
 }

@@ -28,6 +28,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *passportIssueDateLabel;
 @property (weak, nonatomic) IBOutlet UIScrollView *imagesScrollView;
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
+@property (weak, nonatomic) IBOutlet UILabel *rejectionReasonLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rejectionDateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *rejectionReason;
+@property (weak, nonatomic) IBOutlet UILabel *dateOfRejection;
 
 @property (weak, nonatomic) IBOutlet UILabel *noImageLabel;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *imageDownloadingIndicator;

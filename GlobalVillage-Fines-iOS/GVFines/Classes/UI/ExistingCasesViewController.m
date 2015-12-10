@@ -44,8 +44,6 @@
     selectedSubCategoryIndex = -1;
     
     [self loadBusinessCategories];
-    //[self loadPavilionFines];
-    //[self loadFines];
     [self loadPavilionQueueId];
     
     [HelperClass createViewWithShadows:self.filterView];
@@ -167,7 +165,8 @@
     //isLoadingFines = YES;
     //TODO isLoadingCases
     
-    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Id, CaseNumber, Account.Name,RecordType.Name, Shop__r.Name,Shop__r.Id,Fine_Stage__c,Full_Name__c, Gender__c,Mobile_Number__c,Date_of_Birth__c,Nationality__c,Passport_Number__c, Visa_Number__c,Passport_Issue_Date__c,  Violation_Clause__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name FROM Case WHERE (NOT RecordType.DeveloperName LIKE '%Fine') AND (NOT  RecordType.DeveloperName LIKE 'Support') AND Season__r.Name='2015-16'"];
+
+    SFRestRequest *request = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Id, CaseNumber, Account.Name,RecordType.Name, Shop__r.Name,Shop__r.Id,Fine_Stage__c,Full_Name__c, Gender__c,Mobile_Number__c,Date_of_Birth__c,Nationality__c,Passport_Number__c, Visa_Number__c,Passport_Issue_Date__c,  Violation_Clause__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name,Rejection_Reason__c,LastModifiedDate FROM Case WHERE (NOT RecordType.DeveloperName LIKE '%Fine') AND (NOT  RecordType.DeveloperName LIKE 'Support') AND Season__r.Name='2015-16'"];
     [[SFRestAPI sharedInstance] send:request delegate:self];
 }
 
@@ -211,7 +210,6 @@
     [self.loadingView setHidden:NO];
     
     [[UIApplication sharedApplication] beginIgnoringInteractionEvents];
-   // NSLog(@"%hhd",[[UIApplication sharedApplication] isIgnoringInteractionEvents]);
 }
 
 - (void)stopActivityIndicatorSpinner {
@@ -277,7 +275,7 @@
 -(void) loadFilteredFinesArray{
     BOOL sendQuery = NO;
     
-    NSMutableString *query = [[NSMutableString alloc] initWithString:@"SELECT Id, CaseNumber, Account.Name,Account.Id,RecordType.Name, Shop__r.Name,Shop__r.Id,Fine_Stage__c,Full_Name__c, Gender__c,Mobile_Number__c,Date_of_Birth__c,Nationality__c,Passport_Number__c, Visa_Number__c,Passport_Issue_Date__c,  Violation_Clause__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name FROM Case WHERE (NOT RecordType.DeveloperName LIKE '%Fine') AND (NOT  RecordType.DeveloperName LIKE 'Support') AND Season__r.Name='2015-16'"];
+    NSMutableString *query = [[NSMutableString alloc] initWithString:@"SELECT Id, CaseNumber, Account.Name,Account.Id,RecordType.Name, Shop__r.Name,Shop__r.Id,Fine_Stage__c,Full_Name__c, Gender__c,Mobile_Number__c,Date_of_Birth__c,Nationality__c,Passport_Number__c, Visa_Number__c,Passport_Issue_Date__c,  Violation_Clause__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c,Season__r.Name,Rejection_Reason__c,LastModifiedDate FROM Case WHERE (NOT RecordType.DeveloperName LIKE '%Fine') AND (NOT  RecordType.DeveloperName LIKE 'Support') AND Season__r.Name='2015-16'"];
     if (![self.caseNumberTextField.text isEqualToString:@""]) {
         [query appendString:[NSString stringWithFormat:@" AND CaseNumber='%@'",self.caseNumberTextField.text]];
         sendQuery = YES;
@@ -435,7 +433,7 @@
                 createDate = [format dateFromString:[obj objectForKey:@"CreatedDate"]];
             }
             //SELECT Id, CaseNumber, Account.Name,RecordType.DeveloperName, Shop__r.Name,Full_Name__c, Gender__c,Mobile_Number__c,Date_of_Birth__c,Nationality__c,Passport_Number__c, Visa_Number__c,Passport_Issue_Date__c,  Violation_Clause__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c FROM Case WHERE (NOT RecordType.DeveloperName LIKE '%Fine')"
-            [self.finesArray addObject:[[Case alloc] initWithId:[obj objectForKey:@"Id"] caseNumber:[obj objectForKey:@"CaseNumber"] createdDate:createDate exhibitorName:shopName serviceType:serviceType applicationDate:createDate status:[obj objectForKey:@"Status"] BusinessCategory:businessCategoryName SubCategory:shopName nationality:[obj objectForKey:@"Nationality__c"] passportNumber:[obj objectForKey:@"Passport_Number__c"] visaNumber:[obj objectForKey:@"Visa_Number__c"] passportIssueDate:[obj objectForKey:@"Passport_Issue_Date__c"] fullName:[obj objectForKey:@"Full_Name__c"]]];
+            [self.finesArray addObject:[[Case alloc] initWithId:[obj objectForKey:@"Id"] caseNumber:[obj objectForKey:@"CaseNumber"] createdDate:createDate exhibitorName:shopName serviceType:serviceType applicationDate:createDate status:[obj objectForKey:@"Status"] BusinessCategory:businessCategoryName SubCategory:shopName nationality:[obj objectForKey:@"Nationality__c"] passportNumber:[obj objectForKey:@"Passport_Number__c"] visaNumber:[obj objectForKey:@"Visa_Number__c"] passportIssueDate:[obj objectForKey:@"Passport_Issue_Date__c"] fullName:[obj objectForKey:@"Full_Name__c"] rejectionReason:[obj objectForKey:@"Rejection_Reason__c"] lastModified:[obj objectForKey:@"LastModifiedDate"]]];
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -466,25 +464,6 @@
         }
         NSLog(@"request:didLoadResponse:  Object: Shop__c, #records: %lu", (unsigned long)self.subCategoriesArray.count);
     }
-    /*
-    else if([selectQuery rangeOfString:@"FROM Pavilion_Fine_Type__c"].location != NSNotFound)
-    {
-        //isLoadingPavilionFines = NO;
-        //TODO i guess this part is useless
-        self.pavilionFineTypeArray = [[NSMutableArray alloc] init];
-        for (NSDictionary *obj in [jsonResponse objectForKey:@"records"]) {
-            [self.pavilionFineTypeArray addObject:[[PavilionFineType alloc]
-                                                   initPavilionFineTypeWithId:[obj objectForKey:@"Id"]
-                                                   Name:[obj objectForKey:@"Name"]
-                                                   FineAmount:(NSNumber*)[obj objectForKey:@"X1st_Fine_Amount__c"]
-                                                   Department:[obj objectForKey:@"Department__c"]
-                                                   ViolationClause:[obj objectForKey:@"Violation_Clause__c"]
-                                                   Description:[obj objectForKey:@"Fine_Description__c"]
-                                                   ShortDescription:[obj objectForKey:@"Violation_Short_Description__c"]]];
-        }
-        NSLog(@"request:didLoadResponse:  Object: Pavilion_Fine_Type__c, #records: %lu", (unsigned long)self.pavilionFineTypeArray.count);
-    }
-     */
     else if([selectQuery rangeOfString:@"FROM Group"].location != NSNotFound)
     {
         isLoadingQueueId = NO;
@@ -516,12 +495,6 @@
     {
         isLoadingSubCategories = NO;
     }
-    /*
-    else if([selectQuery rangeOfString:@"FROM Pavilion_Fine_Type__c"].location != NSNotFound)
-    {
-        isLoadingPavilionFines = NO;
-    }
-     */
     else if([selectQuery rangeOfString:@"FROM Group"].location != NSNotFound)
     {
         isLoadingQueueId = NO;
@@ -549,19 +522,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    static NSString *CellIdentifier = @"CaseTableViewCell";
-//    
-//    CaseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    
-//    if(!cell) {
-//        
-//        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"CaseTableViewCell" owner:self options:nil];
-//        // Grab a pointer to the first object (presumably the custom cell, as that's all the XIB should contain).
-//        cell = [topLevelObjects objectAtIndex:0];
-////        [tableView registerNib:[UINib nibWithNibName:@"CaseTableViewCell"  bundle:nil]forCellReuseIdentifier:CellIdentifier];
-////        cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-////        cell = [[CaseTableViewCell alloc] init];
-//    }
+
     static NSString *CellIdentifier = @"CaseTableViewCell";
     
     CaseTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -574,10 +535,6 @@
     }
 
     
-    //Fine *currentFine = [finesFilteredArray objectAtIndex:indexPath.row];
-    //Case *currentCase = [[Case alloc] initWithId:<#(NSString *)#> caseNumber:<#(NSString *)#> createdDate:<#(NSDate *)#> exhibitorName:<#(NSString *)#> serviceType:(NSString *) applicationDate:<#(NSDate *)#> status:<#(NSString *)#>];
-    //[cell setSelected:YES];
-    //[cell setSelectionStyle:UITableViewCellSelectionStyleBlue];
     Case *currentCase = [finesFilteredArray objectAtIndex:indexPath.row];
     [cell setCase:currentCase];
     
@@ -586,10 +543,6 @@
 
 #pragma UITableViewDelegate Methods
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    dispatch_async(dispatch_get_main_queue(), ^{
-//        NSLog(@"xcode is fucked up.");
-//        [[[UIAlertView alloc] initWithTitle:@"ay7aga§§" message:@"s5al aho" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
-//    });
      [self.finesTableView deselectRowAtIndexPath:indexPath animated:YES];
     
     
@@ -606,25 +559,7 @@
     CGRect rect = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 1, 1);
     
     [self.caseDetailspopover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:0 animated:YES];
-     
-     
-    /*
-    [self.finesTableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    Fine *selectedFine = [finesFilteredArray objectAtIndex:indexPath.row];
-    
-    FineDetailsViewController *fineDetailsViewController = [[FineDetailsViewController alloc] initFineDetailsViewControllerWithFine:selectedFine FineQueueId:fineQueueId GR1QueueId:GR1QueueId];
-    
-    fineDetailsViewController.delegate = self;
-    
-    self.caseDetailspopover = [[UIPopoverController alloc] initWithContentViewController:fineDetailsViewController];
-    self.caseDetailspopover.delegate = self;
-    self.caseDetailspopover.popoverContentSize = fineDetailsViewController.view.frame.size;
-    
-    CGRect rect = CGRectMake(self.view.frame.size.width / 2, self.view.frame.size.height / 2, 1, 1);
-    
-    [self.caseDetailspopover presentPopoverFromRect:rect inView:self.view permittedArrowDirections:0 animated:YES];
-     */
 }
 
 

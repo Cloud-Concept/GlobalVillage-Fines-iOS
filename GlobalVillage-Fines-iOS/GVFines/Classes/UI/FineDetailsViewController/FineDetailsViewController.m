@@ -457,19 +457,6 @@
         
         NSString *newStatus = @"";
         NSString *ownerId = @"";
-//        UIAlertController *addImages = [UIAlertController alertControllerWithTitle:@"More Images" message:@"Do went to upload more images?" preferredStyle:UIAlertControllerStyleAlert];
-//        UIAlertAction *yesAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            [self cameraButtonClicked:self];
-//        }];
-//        UIAlertAction *noAction = [UIAlertAction actionWithTitle:@"Yes" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//            //[self cameraButtonClicked:self];
-//        }];
-//        [addImages addAction:yesAction];
-//        [addImages addAction:noAction];
-//        
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//        [self presentViewController:addImages animated:YES completion:nil];
-//        });
         UITextField *alertTextField = [alertView textFieldAtIndex:0];
         NSString *Comments = alertTextField.text;
         NSLog(@"%@",currentFine.Status);
@@ -501,22 +488,29 @@
         */
         NSString *dateInString = [SFDateUtil toSOQLDateTimeString:[NSDate date] isDateTime:true];
         //selectedPavilionFineObject.Id, @"Pavilion_Fine_Type__c",
+        SFRestRequest *getRecordTypeRequest = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Id, Name, DeveloperName FROM RecordType WHERE SobjectType = 'Case' AND DeveloperName = 'Re_Issue_Fine'"];
+        [[SFRestAPI sharedInstance] sendRESTRequest:getRecordTypeRequest failBlock:^(NSError *e) {
+            [[[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:@"Please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+        } completeBlock:^(NSDictionary *dic){
+            NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
+                                    currentFine.Id,@"Parent_Fine__c",
+                                    ownerId, @"OwnerId",
+                                    accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
+                                    [dic objectForKey:@"id"], @"RecordTypeId",
+                                    currentCategory.Id, @"AccountId",
+                                    currentSubCategory.Id, @"Shop__c",
+                                    Comments, @"Comments__c",
+                                    newStatus,@"Status",
+                                    dateInString, @"Fine_Last_Status_Update_Date__c",
+                                    nil];
+            SFRestRequest *request = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
+            
+            [[SFRestAPI sharedInstance] send:request delegate:self];
+        }];
+
         //012g00000000l68 SandbBox
         //01220000000Mbt7 Production
-        NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
-                                currentFine.Id,@"Parent_Fine__c",
-                                ownerId, @"OwnerId",
-                                accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
-                                @"01220000000Mbt7", @"RecordTypeId",
-                                currentCategory.Id, @"AccountId",
-                                currentSubCategory.Id, @"Shop__c",
-                                Comments, @"Comments__c",
-                                newStatus,@"Status",
-                                dateInString, @"Fine_Last_Status_Update_Date__c",
-                                nil];
-        SFRestRequest *request = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
         
-        [[SFRestAPI sharedInstance] send:request delegate:self];
     }
 }
 

@@ -32,23 +32,38 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.caseNumber.text = self.currentCase.caseNumber;
-    self.categoryLabel.text = self.currentCase.BusinessCategory;
-    if (self.currentCase.nationality) {
+    if (self.currentCase.caseNumber && ![self.currentCase.caseNumber isKindOfClass:[NSNull class]]) {
+        self.caseNumber.text = self.currentCase.caseNumber;
+    }
+    if (self.currentCase.BusinessCategory && ![self.currentCase.BusinessCategory isKindOfClass:[NSNull class]]) {
+        self.categoryLabel.text = self.currentCase.BusinessCategory;
+    }
+    if (self.currentCase.nationality && ![self.currentCase.nationality isKindOfClass:[NSNull class]]) {
         self.nationalityLabel.text = self.currentCase.nationality;
     } else {
         self.baseNationality.hidden = YES;
     }
-    if (self.currentCase.passportNumber) {
+    if (self.currentCase.passportNumber && ![self.currentCase.passportNumber isKindOfClass:[NSNull class]]) {
         self.passportIssueDateLabel.text = self.currentCase.passportNumber;
     } else{
         self.basePassportLabel.hidden = YES;
     }
     //self.passportIssueDateLabel.text = self.currentCase.passportNumber;
-    if (self.currentCase.visaNumber) {
+    if (self.currentCase.visaNumber && ![self.currentCase.visaNumber isKindOfClass:[NSNull class]]) {
         self.visaNumberLabel.text = self.currentCase.visaNumber;
     } else {
         self.baseVisaLabel.hidden = YES;
+    }
+    if (self.currentCase.rejectionReason && ![self.currentCase.rejectionReason isKindOfClass:[NSNull class]]) {
+        self.rejectionReasonLabel.text = self.currentCase.rejectionReason;
+    } else {
+        self.rejectionReason.hidden = YES;
+    }
+    if (self.currentCase.lastModified && ![self.currentCase.lastModified isKindOfClass:[NSNull class]]) {
+        NSString *rejectionDateString = [[self.currentCase.lastModified componentsSeparatedByString:@"T"] objectAtIndex:0];
+        self.rejectionDateLabel.text = rejectionDateString;
+    } else {
+        self.dateOfRejection.hidden = YES;
     }
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
@@ -57,46 +72,19 @@
     self.passportIssueDateLabel.text = [format stringFromDate:self.currentCase.passportIssueDate];
     //self.issuedByLabel.text = self.currentCase.CreatedBy;
     self.createdDateLabel.text = [format stringFromDate:self.currentCase.CreatedDate];
-    self.fullNameLabel.text = self.currentCase.fullName;
+    if (![self.currentCase.fullName isKindOfClass:[NSNull class]]) {
+        self.fullNameLabel.text = self.currentCase.fullName;
+    } else {
+        self.fullNameLabel.text = @"Unknown";
+    }
+    
     
     
     self.imagesScrollView.delegate = self;
-    
-    self.imageViews = [[NSMutableArray alloc] init];
-    for(UIView *imageView in self.imagesScrollView.subviews){
-        if ([imageView isKindOfClass:[UIImageView class]]) {
-            UIImageView *image = (UIImageView *) imageView;
-            if (image.tag == 3) {
-                [self.imageViews addObject:image];
-                /*
-                 UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-                 [button addTarget:self
-                 action:@selector(imageTapped)
-                 forControlEvents:UIControlEventTouchUpInside];
-                 button.frame = image.frame;
-                 [self.imagesScrollView addSubview:button];
-                 */
-            }
-        }
-    }
-    
-    /*
-     for (UIView* sview in self.imageViews) {
-     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageTapped:)];
-     singleTap.numberOfTapsRequired = 1;
-     singleTap.numberOfTouchesRequired = 1;
-     [sview addGestureRecognizer:singleTap];
-     [sview setUserInteractionEnabled:YES];
-     }*/
-    SFRestRequest *requestForImages = [[SFRestAPI sharedInstance] requestForQuery:[NSString stringWithFormat:@"SELECT Id,Body,ParentId FROM Attachment WHERE ParentId='%@'",self.currentCase.Id]];
+       SFRestRequest *requestForImages = [[SFRestAPI sharedInstance] requestForQuery:[NSString stringWithFormat:@"SELECT Id,Body,ParentId FROM Attachment WHERE ParentId='%@'",self.currentCase.Id]];
     [[SFRestAPI sharedInstance] sendRESTRequest:requestForImages failBlock:^(NSError *e) {
         [[[UIAlertView alloc] initWithTitle:@"Sorry." message:@"Something went wrong" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil] show];
     } completeBlock:^(NSDictionary *dic){
-        /*int recordSize = [dic objectForKey:@"totalSize"];
-         for (int counter = 0; counter<recordSize; counter++) {
-         
-         }*/
-        
         NSArray *records = [dic objectForKey:@"records"];
         self.arrayOfImages = [[NSMutableArray alloc] init];
         self.imagesCount = [records count];
@@ -112,8 +100,8 @@
             
         }
         int counter = 0;
+        int recordsArraySize = records.count;
         for (NSDictionary *record in records) {
-            ////
             // How to get the correct host, since that is configured after the login.
             NSURL * host = [[[[SFRestAPI sharedInstance] coordinator] credentials] instanceUrl];
             
@@ -132,24 +120,42 @@
             NSURLResponse *response=nil;
             NSError * error =nil;
             NSData * data = [NSURLConnection sendSynchronousRequest:urlRequest returningResponse:&response error:&error];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.arrayOfImages addObject:[UIImage imageWithData:data]];
-                UIImageView *image = [[self.imageViews objectAtIndex:counter] initWithImage:[self.arrayOfImages objectAtIndex:counter]];
+            UIImage *singleImage = [UIImage imageWithData:data];
+            if (singleImage) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                UIImageView *singleImageView = [[UIImageView alloc] initWithImage:singleImage];
+                //UIImageView *singleImageView = [[UIImageView alloc] initWithFrame:CGRectMake(60*counter+10, 5, 50, 50)];
+                singleImageView.frame = CGRectMake(60*counter+10, 5, 50, 50);
+                [self.arrayOfImages addObject:singleImage];
+                //singleImageView.image = singleImage;
+                //[singleImageView setImage:singleImage];
+                self.imagesScrollView.contentSize = CGSizeMake(60*counter+70, 59);
+                
                 //[self.imageViews addObject:image];
                 UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
                 button.tag = counter;
                 [button addTarget:self
                            action:@selector(imageTapped:)
                  forControlEvents:UIControlEventTouchUpInside];
-                button.frame = image.frame;
-                [self.imagesScrollView addSubview:button];
-                if (counter == ([records count]-1)) {
-                    [self.imageDownloadingIndicator stopAnimating];
-                }
-            });
+                button.frame = singleImageView.frame;
+                //dispatch_async(dispatch_get_main_queue(), ^{
+                    //UIImageView *image = [[self.imageViews objectAtIndex:counter] initWithImage:[self.arrayOfImages objectAtIndex:counter]];
+                    
+                   
+                    [self.imagesScrollView addSubview:button];
+                    [self.imagesScrollView addSubview:singleImageView];
+                    if (counter == (recordsArraySize-1)) {
+                        [self.imageDownloadingIndicator stopAnimating];
+                    }
+                });
+                counter++;
+            }
+            else {
+                recordsArraySize--;
+            }
             
             ////
-            counter++;
+            
         }
     }];
     

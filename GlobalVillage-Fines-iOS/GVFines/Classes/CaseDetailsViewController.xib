@@ -13,6 +13,7 @@
                 <outlet property="caseNumber" destination="sc2-R1-Fol" id="hau-Nb-ujJ"/>
                 <outlet property="categoryLabel" destination="RDP-xy-7Hl" id="yWf-iF-j9K"/>
                 <outlet property="createdDateLabel" destination="c7N-Cv-58Q" id="p0V-Pu-vZJ"/>
+                <outlet property="dateOfRejection" destination="mUa-vY-qIK" id="CuW-SU-db2"/>
                 <outlet property="fullNameLabel" destination="TO8-FK-VbC" id="wYj-n7-5WJ"/>
                 <outlet property="imageDownloadingIndicator" destination="yxP-64-sJJ" id="VWD-de-Dov"/>
                 <outlet property="imagesScrollView" destination="06P-fM-Ipq" id="PJM-V2-rlt"/>
@@ -20,6 +21,9 @@
                 <outlet property="nationalityLabel" destination="9tG-ZO-G0t" id="1sq-r3-2KM"/>
                 <outlet property="noImageLabel" destination="k3C-Mv-QtR" id="bd5-pa-nm5"/>
                 <outlet property="passportNumberLabel" destination="G3t-70-DPq" id="c45-Ve-zBm"/>
+                <outlet property="rejectionDateLabel" destination="C6h-el-mh2" id="uuk-xG-UuX"/>
+                <outlet property="rejectionReason" destination="joC-rA-QDY" id="jvH-dd-44M"/>
+                <outlet property="rejectionReasonLabel" destination="aBu-bf-tGc" id="ikD-mf-ZcG"/>
                 <outlet property="statusLabel" destination="vmh-kK-iZb" id="Xb6-O2-CPy"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="visaNumberLabel" destination="tq6-uE-563" id="ZQR-ai-30D"/>
@@ -50,7 +54,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Case Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0gg-L2-SWc">
                     <rect key="frame" x="8" y="82" width="131" height="22"/>
                     <animations/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -64,7 +68,7 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Category" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fs5-4Z-VqS">
                     <rect key="frame" x="8" y="143" width="131" height="22"/>
                     <animations/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -76,25 +80,18 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Images" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q1a-9c-nya">
-                    <rect key="frame" x="277" y="141" width="89" height="22"/>
+                    <rect key="frame" x="277" y="81" width="89" height="22"/>
                     <animations/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No images found" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3C-Mv-QtR">
-                    <rect key="frame" x="277" y="163" width="179" height="34"/>
-                    <animations/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="yxP-64-sJJ">
-                    <rect key="frame" x="340" y="143" width="20" height="20"/>
+                    <rect key="frame" x="346" y="82" width="20" height="20"/>
                     <animations/>
                 </activityIndicatorView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Nationality" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qex-N3-HnI">
-                    <rect key="frame" x="8" y="287" width="93" height="21"/>
+                    <rect key="frame" x="8" y="277" width="93" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -115,7 +112,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="G3t-70-DPq">
-                    <rect key="frame" x="8" y="377" width="143" height="21"/>
+                    <rect key="frame" x="8" y="377" width="161" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -138,7 +135,14 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Created Date:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bhX-3d-ZS5">
                     <rect key="frame" x="8" y="526" width="222" height="22"/>
                     <animations/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date of Rejection:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mUa-vY-qIK">
+                    <rect key="frame" x="277" y="526" width="222" height="22"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -156,32 +160,6 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="06P-fM-Ipq">
-                    <rect key="frame" x="268" y="163" width="200" height="59"/>
-                    <subviews>
-                        <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ad2-39-dpp">
-                            <rect key="frame" x="10" y="5" width="50" height="50"/>
-                            <animations/>
-                        </imageView>
-                        <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tzY-RQ-ALN">
-                            <rect key="frame" x="70" y="5" width="50" height="50"/>
-                            <animations/>
-                        </imageView>
-                        <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="HJs-sV-iHY">
-                            <rect key="frame" x="130" y="5" width="50" height="50"/>
-                            <animations/>
-                        </imageView>
-                        <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hd5-t2-66X">
-                            <rect key="frame" x="190" y="5" width="50" height="50"/>
-                            <animations/>
-                        </imageView>
-                        <imageView tag="3" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bsg-39-bg2">
-                            <rect key="frame" x="250" y="5" width="50" height="50"/>
-                            <animations/>
-                        </imageView>
-                    </subviews>
-                    <animations/>
-                </scrollView>
                 <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="c7I-ef-yrR">
                     <rect key="frame" x="0.0" y="310" width="520" height="0.0"/>
                     <subviews>
@@ -202,15 +180,47 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Full Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ugh-Xw-1mU">
                     <rect key="frame" x="8" y="218" width="113" height="22"/>
                     <animations/>
-                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TO8-FK-VbC">
                     <rect key="frame" x="8" y="248" width="261" height="21"/>
                     <animations/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bounces="NO" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="06P-fM-Ipq">
+                    <rect key="frame" x="277" y="106" width="200" height="59"/>
+                    <animations/>
+                </scrollView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rejection Reason" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="joC-rA-QDY">
+                    <rect key="frame" x="8" y="466" width="136" height="21"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBu-bf-tGc">
+                    <rect key="frame" x="8" y="497" width="504" height="21"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C6h-el-mh2">
+                    <rect key="frame" x="277" y="556" width="235" height="21"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="No images found" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="k3C-Mv-QtR">
+                    <rect key="frame" x="277" y="100" width="179" height="34"/>
+                    <animations/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>

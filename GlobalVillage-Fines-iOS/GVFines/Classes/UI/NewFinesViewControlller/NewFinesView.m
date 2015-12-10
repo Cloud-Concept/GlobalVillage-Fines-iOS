@@ -390,7 +390,7 @@
                                               CreatedBy:[[obj objectForKey:@"CreatedBy"] objectForKey:@"Name"]
                                             CreatedDate:[obj objectForKey:@"CreatedDate"]
                                FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"]
-                                                 Issued:[obj objectForKey:@"issued__c"]
+                                                 Issued:[[obj objectForKey:@"issued__c"] boolValue]
                                                  shopId:shopId
                                        PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
                                                   Stage:[obj objectForKey:@"Fine_Stage__c"]
@@ -848,7 +848,7 @@
                                                 CreatedBy:[[obj objectForKey:@"CreatedBy"] objectForKey:@"Name"]
                                               CreatedDate:[obj objectForKey:@"CreatedDate"]
                                  FineLastStatusUpdateDate:[obj objectForKey:@"Fine_Last_Status_Update_Date__c"]
-                                                   Issued:[obj objectForKey:@"issued__c"]
+                                                   Issued:[[obj objectForKey:@"issued__c"] boolValue]
                                                    shopId:shopId
                                          PavilionFineType:[obj objectForKey:@"Pavilion_Fine_Type__c"]
                                                     Stage:[obj objectForKey:@"Fine_Stage__c"]

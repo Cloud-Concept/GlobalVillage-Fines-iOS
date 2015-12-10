@@ -97,27 +97,42 @@
         NSString *dateInString = [SFDateUtil toSOQLDateTimeString:[NSDate date] isDateTime:true];
         //selectedPavilionFineObject.Id, @"Pavilion_Fine_Type__c",
     //SELECT Id, CaseNumber, Account.Name, Shop__r.Name,issued__c, Violation_Clause__c, Violation_Description__c, Violation_Short_Description__c, Fine_Department__c, X1st_Fine_Amount__c, X2nd_Fine_Amount__c,Fine_Amount__c, Comments__c, Status, CreatedBy.Name, CreatedDate, Fine_Last_Status_Update_Date__c FROM Case WHERE RecordType.DeveloperName = 'Re_Issue_Fine' AND Issued__c != true
-    //012g00000000l68 Sand
-    //01220000000Mbt7 Production
+    SFRestRequest *getRecordTypeRequest = [[SFRestAPI sharedInstance] requestForQuery:@"SELECT Id, Name, DeveloperName FROM RecordType WHERE SobjectType = 'Case' AND DeveloperName = 'Re_Issue_Fine'"];
+    [[SFRestAPI sharedInstance] sendRESTRequest:getRecordTypeRequest failBlock:^(NSError *e) {
+        [[[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:@"Please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+    } completeBlock:^(NSDictionary *dic){
+        NSString *recordTypeId;
+        if ([dic objectForKey:@"records"]) {
+            if ([[dic objectForKey:@"records"] objectAtIndex:0]) {
+                NSString *longRecordTypeId = [[[dic objectForKey:@"records"] objectAtIndex:0] objectForKey:@"Id"];
+                //NSLog(@"%lu",(unsigned long)[longRecordTypeId length]);
+                recordTypeId = [longRecordTypeId length]>15?[longRecordTypeId substringToIndex:[longRecordTypeId length]-3]:longRecordTypeId;
+            }
+        }
         NSDictionary *fields = [NSDictionary dictionaryWithObjectsAndKeys:
                                 self.fine.Id,@"Parent_Fine__c",
                                 ownerId, @"OwnerId",
                                 self.fine.pavilionFineType,@"Pavilion_Fine_Type__c",
                                 accountManager.currentUser.credentials.userId, @"Latest_Fine_Issuer__c",
-                                @"01220000000Mbt7", @"RecordTypeId",
+                                recordTypeId, @"RecordTypeId",
                                 self.fine.BusinessCategoryId, @"AccountId",
                                 comments, @"Comments__c",
                                 newStatus,@"Status",
                                 dateInString, @"Fine_Last_Status_Update_Date__c",
                                 self.fine.shopId,@"Shop__c",
                                 nil];
-    SFRestRequest *createFineRequest = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
-    [[SFRestAPI sharedInstance] sendRESTRequest:issuedRequest failBlock:^(NSError *e) {
-        [[[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:@"Please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
-    } completeBlock:^(NSDictionary *dic){
-        [[SFRestAPI sharedInstance] send:createFineRequest delegate:self];
+        SFRestRequest *createFineRequest = [[SFRestAPI sharedInstance] requestForCreateWithObjectType:@"Case" fields:fields];
+        
+        [[SFRestAPI sharedInstance] sendRESTRequest:issuedRequest failBlock:^(NSError *e) {
+            [[[UIAlertView alloc] initWithTitle:@"Something Went Wrong" message:@"Please try again" delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil] show];
+        } completeBlock:^(NSDictionary *dic){
+            [[SFRestAPI sharedInstance] send:createFineRequest delegate:self];
+        }];
+
     }];
-    
+    //012g00000000l68 Sand
+    //01220000000Mbt7 Production
+        
 }
 
 - (IBAction)cameraButtonClicked:(id)sender {

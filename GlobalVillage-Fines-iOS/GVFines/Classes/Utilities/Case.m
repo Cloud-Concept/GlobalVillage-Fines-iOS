@@ -10,7 +10,7 @@
 
 @implementation Case
 
--(instancetype) initWithId:(NSString *)caseId caseNumber:(NSString *)number createdDate:(NSDate *)createdDate exhibitorName:(NSString *)exhibitorName serviceType:(NSString *)serviceType applicationDate:(NSDate *)applicationDate status:(NSString *)status BusinessCategory:(NSString *)BusinessCategory SubCategory:(NSString *) SubCategory nationality:(NSString *)nationality passportNumber:(NSString *)passportNumber visaNumber:(NSString *)visaNumber passportIssueDate:(NSString *)passportIssueDate fullName:(NSString *)fullName
+-(instancetype) initWithId:(NSString *)caseId caseNumber:(NSString *)number createdDate:(NSDate *)createdDate exhibitorName:(NSString *)exhibitorName serviceType:(NSString *)serviceType applicationDate:(NSDate *)applicationDate status:(NSString *)status BusinessCategory:(NSString *)BusinessCategory SubCategory:(NSString *) SubCategory nationality:(NSString *)nationality passportNumber:(NSString *)passportNumber visaNumber:(NSString *)visaNumber passportIssueDate:(NSString *)passportIssueDate fullName:(NSString *)fullName rejectionReason:(NSString *)rejectionReason lastModified:(NSString *)lastModified
 {
     if(!(self = [super init]))
         return nil;
@@ -25,6 +25,8 @@
     self.BusinessCategory = BusinessCategory;
     self.SubCategory = SubCategory;
     self.fullName = fullName;
+    self.rejectionReason = rejectionReason;
+    self.lastModified = lastModified;
     return self;
 }
 
